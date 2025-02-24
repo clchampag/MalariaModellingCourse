@@ -1,10 +1,25 @@
 library(deSolve)
 library(ggplot2)
 
+m=1.45 # relative density mosquito/human
+a=0.5 # biting rate
+b=0.097 # probability that a bite successfully infects the human
+c=1 # probability that a bite successfully infects the mosquito
+g =0.05 #  mortality rate for the mosquito
+alpha1=0.002 # rate from I to R (loss of infectivity)
+alpha2=0.00019 # rate from R to R2 (develop long term immunity)
+r=1/80 # recovery rate in human
+delta=1/10000 # mortality rate human
+N= 15 #duration of the intrinsic incubation period (in human)
+v=10 # duration extrinsic incubation period (in mosquito)
+q1=1 # infectivity of I
+q2=1 # infectivity of R
+q3=0.7 # infectivity of R2
+
 theta_init =c(
-  "m"=1.45,"a"=0.5,"b"=0.097,"g"=0.05,"v"=10, 
+  "m"=5,"a"=0.5,"b"=0.097,"g"=0.05,"v"=10, 
                 "r1"=0.0023, 'r2'=0.023, "alpha1"=0.002, "alpha2"=0.00019, 
-              "N"=15, "delta"=1/10000, "q3"=0.7)
+              "N"=15, "delta"=1/10000)
 
 ####### 
 # WARNING
@@ -14,13 +29,13 @@ theta_init =c(
 Garki<-function(t,x,parms){
 
   ## state variables
-  S = x[1]
-  E = x[2]
-  I = x[3]
-  R = x[4]
-  R2 = x[5]
-  S2 = x[6]
-  E2 = x[7]
+  S = x[1]  #x1
+  E = x[2]  #x2
+  I = x[3]  #y1
+  R = x[4]  #y2
+  R2 = x[5] #y3
+  S2 = x[6] #x3
+  E2 = x[7] #x4
   
   
   ## parameter values
@@ -84,5 +99,5 @@ R0=VC*theta_init["b"]/(theta_init["alpha1"]*theta_init["delta"])
 ggplot(simul)+
   geom_line(aes(x=time, y=positive))+ ylim(0,1)+
   labs(y="Proportion of\ninfected individuals", x="Time (days)")+
-  ggtitle(paste0("VC=",round(VC, 3)))
+  ggtitle(paste0("VC=",round(VC, 3), "\n R0=", round(R0, 3)))
 
