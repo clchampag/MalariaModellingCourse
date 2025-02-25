@@ -98,7 +98,6 @@ simulate_Garki=function(parameters){
 simul=simulate_Garki(parameters = theta_init)
 
 VC=theta_init["m"]*theta_init["a"]*theta_init["a"]*exp(-theta_init["g"]*theta_init["v"])/g
-R0=VC*theta_init["b"]/(theta_init["alpha1"]+theta_init["delta"])
 ggplot(simul)+
   geom_line(aes(x=time, y=positive))+ ylim(0,1)+
   labs(y="Proportion of\ninfected individuals", x="Time (days)")+
